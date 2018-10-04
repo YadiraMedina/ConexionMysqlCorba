@@ -3,6 +3,7 @@ package conexionmysqlcorba;
 
 import java.sql.*;
 import Terceros.*;
+import javax.swing.JOptionPane;
 
 public class Tercero extends TerceroPOA{
     //atributo de tipo conexion
@@ -36,6 +37,9 @@ public class Tercero extends TerceroPOA{
                         + rs.getString(3)+ "-"
                         + rs.getString(4);
             }
+            //Se cierran las conexiones
+            rs.close();
+            objConec.Conexion.close();
         } catch (Exception e) {
             System.out.print("Error"+ e.getMessage());
         }
@@ -46,5 +50,18 @@ public class Tercero extends TerceroPOA{
     @Override
     public void shoutdown() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public ResultSet cargarTercero(){
+        ResultSet resultado=null;
+        try {
+            String sql="SELECT nombres, apellidos, telefono FROM terceros";
+            objConec.conectar();
+            Statement st=objConec.Conexion.createStatement();
+            resultado=st.executeQuery(sql);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error:"+ e.getMessage());
+        }
+        return resultado;
     }
 }
