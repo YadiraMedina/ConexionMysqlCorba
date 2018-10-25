@@ -28,18 +28,21 @@ public class Terceros extends javax.swing.JFrame {
     }
     //Método para cargar columnas tabla
     private String[] getColumn(){
-        String columnas[]=new String[]{"Nombres","Apellidos","Teléfono"};
+        String columnas[]=new String[]{"Id","Nombres","Apellidos","Teléfono"};
         return columnas;
     }
     
     //Método para cargar los registros
     private void cargarTabla(){
+        //modeloTabla = (DefaultTableModel) Tabla.getModel();
+        while(modeloTabla.getRowCount()>0)modeloTabla.removeRow(0);
+        //modeloTabla.cle
         Tercero objTercero=new Tercero();
         ResultSet resultado=objTercero.cargarTercero();
         try {
-            Object datos[]=new Object[3];
+            Object datos[]=new Object[4];
             while(resultado.next()){
-                for(int i=0; i<3; i++){
+                for(int i=0; i<4; i++){
                     datos[i]=resultado.getObject(i+1);
                 }
                 modeloTabla.addRow(datos);
@@ -69,7 +72,7 @@ public class Terceros extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbTerce = new javax.swing.JTable();
         btnConsultar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
@@ -94,8 +97,13 @@ public class Terceros extends javax.swing.JFrame {
 
         btnLimpiar.setText("LIMPIAR");
 
-        jTable1.setModel(modeloTabla);
-        jScrollPane1.setViewportView(jTable1);
+        tbTerce.setModel(modeloTabla);
+        tbTerce.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbTerceMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbTerce);
 
         btnConsultar.setText("CONSULTAR");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -220,6 +228,16 @@ public class Terceros extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void tbTerceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTerceMouseClicked
+        // Evento click
+        int seleccion= tbTerce.rowAtPoint(evt.getPoint());
+        txtId.setText(String.valueOf(tbTerce.getValueAt(seleccion, 0)));
+        txtNombres.setText(String.valueOf(tbTerce.getValueAt(seleccion, 1)));
+        txtApellidos.setText(String.valueOf(tbTerce.getValueAt(seleccion, 2)));
+        txtTelefono.setText(String.valueOf(tbTerce.getValueAt(seleccion, 3)));
+        
+    }//GEN-LAST:event_tbTerceMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -266,7 +284,7 @@ public class Terceros extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbTerce;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNombres;
